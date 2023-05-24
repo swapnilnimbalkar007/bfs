@@ -1,28 +1,85 @@
-import java.util.Scanner;
+package BFSAndDFS;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class MovieBookingSystem {
-  static int availableSeats = 20;
+class Graph
+{
+	ArrayList<ArrayList<Integer>>graph= new ArrayList<ArrayList<Integer>>();
+	int v;
+	
+	Graph(int node)
+	{
+		v=node;
+//		graph = new ArrayList<ArrayList<Integer>>();
+		
+		for(int i=0;i<v;i++)
+		{
+			graph.add( new ArrayList<Integer>());
+		}
+	}
+	
+	void addEdge(int v,int u)
+	{
+		graph.get(v).add(u);
+		graph.get(u).add(v);
+	}
+	
+	void printGraph()
+	{
+		for(int i=0;i<v;i++)
+		{
+			System.out.println("Node " + i);
+			
+			for(int x: graph.get(i))
+			{
+				System.out.println("-> "+x);
+			}
+		}
+	}
+	
+	void bsf(int start)
+	{
+		boolean visited[] = new boolean[v];
+		System.out.println("BSF travesal");
+		Queue<Integer>q = new LinkedList<Integer>();
+		q.add(start);
+		visited[start] = true;
+		
+		while(q.isEmpty()==false)
+		{
+			int node = q.poll();
+			
+			System.out.print(node+" ");
+			
+			for(int x: graph.get(node))
+			{
+				if(visited[x] ==false)
+				{
+					visited[x]=true;
+					q.add(x);
+				}
+			}
+			
+		}
+		
+	}
+}
+public class bfs {
 
-  public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);
+	public static void main(String[] args) {
+		
+		Graph g = new Graph(5);
+		g.addEdge(0, 1);
+		g.addEdge(3, 2);
+		g.addEdge(1, 4);
+		g.addEdge(3, 2);
+		g.addEdge(0, 4);
+		
+		g.printGraph();
+		
+		g.bsf(0);
 
-    System.out.println("Welcome to the Movie Ticket Booking System");
-    System.out.println("Available seats: " + availableSeats);
+	}
 
-    while (true) {
-      System.out.print("Enter the number of seats to book (or 0 to exit): ");
-      int numSeats = sc.nextInt();
-      if (numSeats == 0) {
-        break;
-      }
-      if (numSeats > availableSeats) {
-        System.out.println("Sorry, we only have " + availableSeats + " seats available.");
-      } else {
-        availableSeats -= numSeats;
-        System.out.println("Booking confirmed! Enjoy the movie.");
-        System.out.println("Available seats: " + availableSeats);
-      }
-    }
-    System.out.println("Thanks for using the movie ticket booking system.");
-  }
 }
